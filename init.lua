@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -187,10 +187,10 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
--- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
--- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
--- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -908,7 +908,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'systemverilog' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -940,6 +940,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
+  require 'custom.plugins.vim-tmux-navigator',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
@@ -971,6 +972,7 @@ require('lazy').setup({
     },
   },
 })
+
 -- Add nvim-cmp LSP capabilities for autocompletion
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- Create an event handler for Verilog and SystemVerilog files
@@ -979,12 +981,11 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function()
     vim.lsp.start {
       name = 'verible',
-      cmd = { 'verible-verilog-ls', '--rules_config_search' },
+      cmd = { 'verible-verilog-ls', '--rules_config=~/.config/nvim/.verible_config' },
       capabilities = capabilities, -- Enable LSP capabilities for autocompletion
     }
   end,
 })
-
 -- Format Verilog files on save
 vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = '*.v',
@@ -992,20 +993,34 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     vim.lsp.buf.format { async = false }
   end,
 })
+-- Setting the filetype for SystemVerilog
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = { '*.sv' },
+  command = 'set filetype=systemverilog',
+})
 
-local lspconfig = require 'lspconfig'
-
--- Setup for Veridian LSP
-lspconfig.veridian.setup {
-  cmd = { 'veridian' },
-  filetypes = { 'verilog', 'systemverilog' },
-  root_dir = lspconfig.util.root_pattern('veridian.yml', '.git'),
+-- Setup Verible language server with Mason
+require('lspconfig').verible.setup {
+  on_attach = on_attach,
+  cmd = {
+    'verible-verilog-ls',
+    '--rules_config=~/.config/nvim/.verible_config',
+  },
+  flags = lsp_flags,
+  root_dir = function()
+    return vim.loop.cwd()
+  end,
 }
+
+-- local lspconfig = require 'lspconfig'
+-- -- Setup for Veridian LSP
+-- lspconfig.veridian.setup {
+--   cmd = { 'veridian' },
+--   filetypes = { 'verilog', 'systemverilog' },
+--   root_dir = lspconfig.util.root_pattern('veridian.yml', '.git'),
+-- }
+
 -- Global settings
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.softtabstop = 4
 
 -- Update modeline
 -- vim: ts=4 sts=4 sw=4 et
