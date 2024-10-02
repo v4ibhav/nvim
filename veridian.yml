@@ -1,0 +1,16 @@
+verilator:
+  # Verilator configuration
+  syntax:
+    # Default: true if in path
+    enabled: false  # Changed to boolean without quotes
+    path: "verilator"
+    # Default: specified below
+    args:
+      - --lint-only
+      - --sv
+      - -Wall
+
+# Set log level
+# Default: Info
+log_level: Error  # Changed to a single valid log level without quotes
+
