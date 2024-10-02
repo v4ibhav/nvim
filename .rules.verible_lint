@@ -1,0 +1,6 @@
+-always-comb
+-module-filename
+-no-tabs
+-parameter-name-style
+-explicit-parameter-storage-type
+-undersized-binary-literal
