@@ -9,12 +9,18 @@ local keymap = vim.keymap -- for conciseness
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
---TODO: Change it to esc
+-- move line up or down
+-- Move line up
+keymap.set("n", "K", ":m .-2<CR>==", { noremap = true, silent = true })
+keymap.set("n", "J", ":m .+1<CR>==", { noremap = true, silent = true })
+keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
+
 -- clear search highlights
 keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- delete single character without copying into register
--- keymap.set("n", "x", '"_x')
+keymap.set("n", "x", '"_x')
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment

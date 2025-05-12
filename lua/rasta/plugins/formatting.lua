@@ -12,6 +12,8 @@ return {
 				python = { "isort", "black" },
 				systemverilog = { "verible" },
 				verilog = { "verible" },
+				c = { "clang-format" }, -- Add Clang Format for C
+				cpp = { "clang-format" }, -- Add Clang Format for C++
 			},
 			format_on_save = {
 				lsp_fallback = true,

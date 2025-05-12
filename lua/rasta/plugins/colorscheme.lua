@@ -1,19 +1,22 @@
+-- vim.o.background = "light"
+--
 return {
-	"rose-pine/neovim",
-	name = "rose-pine",
-	priority = 1000,
-	config = function()
-		vim.cmd("colorscheme rose-pine-moon")
+	{
+		"projekt0n/github-nvim-theme",
+		name = "github-theme",
+		config = function()
+			vim.cmd("colorscheme github_dark_default")
+			-- vim.cmd("colorscheme github_light_default")
+			-- vim.api.nvim_set_hl(0, "Comment", { fg = "#6A9955", italic = true })
+		end,
+	},
 
-		-- Set background to the specified dark color
-		vim.api.nvim_set_hl(0, "Normal", { bg = "#282828" }) -- Dark background for normal text
-		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#282828" }) -- Dark background for floating windows
-
-		-- -- Set background to dark black
-		-- vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" }) -- Dark black background for normal text
-		-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#000000" }) -- Dark black background for floating windows
-
-		-- Disable comment styling
-		-- vim.cmd.hi("Comment gui=none")
-	end,
+	-- {
+	-- 	"Mofiqul/vscode.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		vim.cmd("colorscheme vscode")
+	-- 	end,
+	-- },
 }

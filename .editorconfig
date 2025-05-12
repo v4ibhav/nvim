@@ -1,0 +1,21 @@
+# Top-most EditorConfig file
+root = true
+
+# All files
+[*]
+indent_style = tab
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# For Makefiles
+[Makefile]
+indent_style = tab
+
+# For Python files (if you want to use spaces for Python, keep this)
+[*.py]
+indent_style = tab
+indent_size = 4
+

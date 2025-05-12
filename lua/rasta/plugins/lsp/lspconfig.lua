@@ -55,7 +55,7 @@ return {
 				keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 
 				opts.desc = "Show documentation for what is under cursor"
-				keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				keymap.set("n", "gK", vim.lsp.buf.hover, opts)
 
 				opts.desc = "Restart LSP"
 				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
@@ -98,23 +98,23 @@ return {
 				})
 			end,
 
-			["verible"] = function()
-				-- Configure Verible language server
-				lspconfig["verible"].setup({
-					cmd = { "/home/rasta/.local/share/nvim/mason/bin/verible-verilog-ls", "--rules_config_search" },
-					capabilities = capabilities,
-					on_attach = function(client, bufnr)
-						local bufopts = { noremap = true, silent = true, buffer = bufnr }
-						-- Additional keybindings can be added here if needed
-					end,
-					flags = {
-						debounce_text_changes = 150,
-					},
-					root_dir = function()
-						return vim.fn.getcwd() -- Adjust this as needed for project root detection
-					end,
-				})
-			end,
+			-- ["verible"] = function()
+			-- 	-- Configure Verible language server
+			-- 	lspconfig["verible"].setup({
+			-- 		cmd = { "/home/rasta/.local/share/nvim/mason/bin/verible-verilog-ls", "--rules_config_search" },
+			-- 		capabilities = capabilities,
+			-- 		on_attach = function(client, bufnr)
+			-- 			local bufopts = { noremap = true, silent = true, buffer = bufnr }
+			-- 			-- Additional keybindings can be added here if needed
+			-- 		end,
+			-- 		flags = {
+			-- 			debounce_text_changes = 150,
+			-- 		},
+			-- 		root_dir = function()
+			-- 			return vim.fn.getcwd() -- Adjust this as needed for project root detection
+			-- 		end,
+			-- 	})
+			-- end,
 		})
 	end,
 }
